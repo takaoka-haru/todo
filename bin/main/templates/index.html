@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>demo画面</title>
+</head>
+<body>
+<h2>ToDo新規追加</h2>
+<!--Create-->
+<form th:action="@{/add}" th:object="${todo}" method="post">
+  <label>ToDo:</label>
+  <input type="text" th:field="*{content}">
+  <button>登録</button>
+</form>
+
+<br>
+<h2>ToDo一覧</h2>
+<div th:if="${todos.size() == 0}">
+  タスクがありません
+</div>
+<div th:if="${todos.size() > 0}">
+  <!--Read & Edit-->
+  <div th:each="todo : ${todos}"> <!--th:each 繰り返し処理をおこなう-->
+    <form th:action="@{/edit}" th:object="${todo}" method="post" style="display: inline">
+      <input type="hidden" name="id" th:value="*{id}">
+      <label for="content">[[*{id}]] : </label>
+      <input type="text" name="content" th:value="*{content}">
+      <button>更新</button>
+    </form>
+    <!--Delete-->
+    <a th:href="@{/delete/{id}(id=${todo.id})}">削除</a>
+  </div>
+</div>
+</body>
+</html>
